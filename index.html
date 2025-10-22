@@ -44,20 +44,21 @@
       -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-      overflow-x: hidden;
+      overflow: hidden; /* Prevent scrolling on the body */
     }
 
-    /* main shell */
+    /* main shell - fills the screen */
     .app {
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: stretch;
       justify-content: space-between;
       box-sizing: border-box;
-      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      padding: env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + var(--nav-bottom-h));
       max-width: var(--max-width);
       margin: 0 auto;
+      position: relative;
     }
 
     /* top nav - minimal */
@@ -71,6 +72,8 @@
       flex-shrink: 0;
       border-bottom: 1px solid var(--glass-border);
       background: var(--card-bg);
+      position: relative;
+      z-index: 10;
     }
 
     /* logo + title */
@@ -108,7 +111,7 @@
       color: var(--vtu-maroon);
     }
 
-    /* center area */
+    /* center area - now scrollable */
     .center-area {
       flex: 1 1 auto;
       display: flex;
@@ -119,6 +122,16 @@
       box-sizing: border-box;
       min-height: 0;
       width: 100%;
+      overflow-y: auto; /* Allow this area to scroll */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+     /* Hide scrollbar */
+    .center-area::-webkit-scrollbar {
+      display: none;
+    }
+    .center-area {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
     .center-inner {
@@ -135,6 +148,7 @@
     /* the three cards - professional with borders */
     .card {
       height: var(--card-h);
+      flex-shrink: 0; /* Prevent cards from shrinking */
       background: var(--card-bg);
       border-radius: 12px;
       display: flex;
@@ -219,7 +233,7 @@
       height: 64%;
     }
 
-    /* bottom area */
+    /* bottom area - FIXED to the bottom */
     .bottom-reserved {
       height: var(--nav-bottom-h);
       display: flex;
@@ -227,9 +241,16 @@
       justify-content: center;
       padding: 12px 16px;
       box-sizing: border-box;
-      flex-shrink: 0;
       background: var(--card-bg);
       border-top: 1px solid var(--glass-border);
+      position: fixed; /* Fix to the viewport */
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      z-index: 1000; /* Ensure it's on top of content */
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     /* Professional swipe bar with Calibri font */
@@ -534,4 +555,3 @@
   </script>
 </body>
 </html>
-
