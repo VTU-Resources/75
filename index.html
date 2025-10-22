@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>MY VTU — Dashboard</title>
+
+  <!-- Google Font (Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lottie (lottie-web) -->
+  <script src="https://unpkg.com/lottie-web@latest/build/player/lottie.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b0b0c;           /* deep black */
+      --panel:#0f0f10;        /* slightly off-black for depth */
+      --muted:#bdbdbd;        /* light gray text */
+      --accent:#ff7a18;       /* orange (no neon) */
+      --accent-strong:#ff6a00;
+      --radius:14px;
+      --nav-top-h:64px;      /* reserved top */
+      --nav-bottom-h:80px;   /* reserved bottom */
+      --card-h:84px;
+      --max-width:720px;
+      --safe-gap:16px;
+      --glow:0 8px 24px rgba(255,122,24,0.12);
+      --glow-strong:0 14px 40px rgba(255,122,24,0.16);
+    }
+
+    /* Mobile-first base */
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:white;
+      font-family:'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-tap-highlight-color: transparent; /* avoid blue highlight on Android */
+      touch-action: manipulation;
+    }
+
+    /* main shell */
+    .app {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      justify-content:flex-start;
+      box-sizing:border-box;
+      padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+
+    /* top nav reserved space (for future) */
+    .top-reserved {
+      height:var(--nav-top-h);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:0 8px;
+      box-sizing:border-box;
+    }
+
+    /* logo + title */
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo {
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      overflow:hidden;
+      flex-shrink:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .title {
+      font-weight:700;
+      letter-spacing:1px;
+      font-size:18px;
+      color:white;
+      text-align:center;
+    }
+
+    /* center area - fills remaining vertical space but leaves bottom nav reserved */
+    .center-area {
+      flex:1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px;
+      box-sizing:border-box;
+    }
+
+    .center-inner {
+      width:100%;
+      max-width:520px;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      justify-content:center;
+      gap:16px;
+      padding:12px;
+      box-sizing:border-box;
+    }
+
+    /* the three cards/buttons */
+    .card {
+      height:var(--card-h);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      box-sizing:border-box;
+      cursor:pointer;
+      text-decoration:none;
+      color:inherit;
+      transition:transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
+      will-change:transform, box-shadow;
+      border:1px solid rgba(255,255,255,0.03);
+      user-select:none;
+      -webkit-user-select:none;
+      outline: none;
+    }
+
+    .card .anim {
+      width:56px;
+      height:56px;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      background:rgba(255,255,255,0.01);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .card .meta {
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      align-items:flex-start;
+      justify-content:center;
+      flex:1 1 auto;
+      min-width:0;
+    }
+
+    .card .meta .name {
+      font-size:16px;
+      font-weight:600;
+      color:white;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+
+    .card .meta .desc {
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* subtle hover / focus / active effects (tap friendly) */
+    .card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: var(--glow);
+    }
+
+    .card:active {
+      transform:translateY(-1px) scale(.995);
+      box-shadow: var(--glow-strong);
+    }
+
+    .card:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255,122,24,0.12);
+      transform: translateY(-4px);
+    }
+
+    /* orange accent bar on left */
+    .card::before{
+      content:"";
+      width:6px;
+      height:64%;
+      background:transparent;
+      border-radius:6px;
+      margin-right:8px;
+      transition:background 220ms ease, transform 220ms ease;
+      transform-origin:center;
+    }
+    .card:hover::before{ background:var(--accent); transform:scaleY(1.03); }
+    .card:active::before{ transform:scaleY(.98); }
+
+    /* subtle glow on the anim */
+    .card:hover .anim { box-shadow: 0 8px 30px rgba(255,122,24,0.08); transform: translateY(-2px); }
+
+    /* bottom reserved nav area (future) */
+    .bottom-reserved {
+      height:var(--nav-bottom-h);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:12px;
+      box-sizing:border-box;
+    }
+
+    /* small hint */
+    .hint {
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+      margin-bottom:6px;
+    }
+
+    /* responsive tweaks for very small screens */
+    @media (max-width:360px){
+      .logo{ width:40px; height:40px; }
+      .title{ font-size:16px; }
+      .card{ padding:10px; height:76px; }
+      .card .anim{ width:52px; height:52px; }
+    }
+
+    /* large phones / tablets — keep centered */
+    @media (min-width:720px){
+      .app{ padding-left:20px; padding-right:20px; }
+      .center-inner{ gap:20px; }
+    }
+
+    /* fallback for when lottie fails */
+    .lottie-fallback {
+      width:48px;
+      height:48px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:20px;
+    }
+
+    /* ADDED: keep the left accent line always visible on all cards */
+    .card::before{ background:var(--accent); }
+
+    /* ADDED: tiny loader overlay */
+    .loader-overlay{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(11,11,12,0.55);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index:9999;
+      visibility:hidden;
+      opacity:0;
+      transition:opacity 180ms ease, visibility 0s linear 180ms;
+    }
+    .loader-overlay.show{
+      visibility:visible;
+      opacity:1;
+      transition:opacity 180ms ease, visibility 0s;
+    }
+    .loader-box{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.02);
+      box-shadow: var(--glow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px;
+    }
+    .loader-box .lottie-fallback{
+      width:40px;height:40px;font-size:18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="My VTU dashboard">
+
+    <!-- Top reserved nav area -->
+    <header class="top-reserved" aria-hidden="false">
+      <div class="brand" style="align-items:center;">
+        <div class="logo" aria-hidden="true">
+          <!-- Place your circular logo as logo.png in same folder -->
+          <img src="logo.png" alt="MY VTU logo" onerror="this.style.display='none'">
+        </div>
+        <div class="title" aria-level="1">MY VTU</div>
+      </div>
+    </header>
+
+    <!-- Center main content (cards vertically centered) -->
+    <main class="center-area" id="main">
+      <div class="center-inner" role="main" aria-label="Main dashboard">
+
+        <!-- Card: SGPA Calculator -->
+        <a class="card" id="sgpaCard" href="sgpa.html" role="link" aria-label="Open SGPA Calculator">
+          <div class="anim" id="anim-sgpa" aria-hidden="true"></div>
+          <div class="meta">
+            <div class="name">SGPA Calculator</div>
+            <div class="desc">Semester grade point calculator — fast & accurate</div>
+          </div>
+        </a>
+
+        <!-- Card: CGPA Calculator -->
+        <a class="card" id="cgpaCard" href="cgpa.html" role="link" aria-label="Open CGPA Calculator">
+          <div class="anim" id="anim-cgpa" aria-hidden="true"></div>
+          <div class="meta">
+            <div class="name">CGPA Calculator</div>
+            <div class="desc">Cumulative GPA builder — track progress semester-wise</div>
+          </div>
+        </a>
+
+        <!-- Card: Percentage Calculator -->
+        <a class="card" id="percCard" href="percentage.html" role="link" aria-label="Open Percentage Calculator">
+          <div class="anim" id="anim-perc" aria-hidden="true"></div>
+          <div class="meta">
+            <div class="name">Percentage Calculator</div>
+            <div class="desc">Convert CGPA to percentage or compute percent scores</div>
+          </div>
+        </a>
+
+        <div class="hint" aria-hidden="true">Tap a tile to continue — smooth, offline friendly UI</div>
+      </div>
+    </main>
+
+    <!-- Bottom reserved nav area -->
+    <footer class="bottom-reserved" aria-hidden="true">
+      <!-- Future bottom nav / tabs live here -->
+      <div style="width:100%;max-width:680px;display:flex;justify-content:center;gap:12px;">
+        <div style="height:56px;width:56px;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Home</div>
+        <div style="height:56px;flex:1;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Explore</div>
+        <div style="height:56px;width:56px;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Me</div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ADDED: tiny global loader overlay -->
+  <div id="loaderOverlay" class="loader-overlay" aria-hidden="true" aria-live="polite" role="status">
+    <div class="loader-box">
+      <div id="loaderAnim" class="loader-anim"></div>
+    </div>
+  </div>
+
+  <script>
+    // Defensive: prevent default focus outline color from system (no blue)
+    (function(){
+      const css = '*:focus{outline:none!important}';
+      const s = document.createElement('style');
+      s.appendChild(document.createTextNode(css));
+      document.head.appendChild(s);
+    })();
+
+    // Small utility for safe lottie loading with fallback
+    function loadLottie(targetId, jsonUrl, loop=true, autoplay=true, renderer='svg') {
+      const target = document.getElementById(targetId);
+      if(!target) return;
+      try {
+        // lottie global from included CDN
+        const anim = lottie.loadAnimation({
+          container: target,
+          renderer: renderer,
+          loop: loop,
+          autoplay: autoplay,
+          path: jsonUrl
+        });
+
+        // subtle speed and idle behavior
+        anim.setSpeed(1);
+        anim.addEventListener('DOMLoaded', ()=> {
+          // small scale animation in on load
+          target.style.transition = 'transform 400ms cubic-bezier(.2,.9,.2,1)';
+        });
+
+      } catch(e) {
+        // fallback: place a simple icon text
+        target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
+      }
+    }
+
+    // Chosen subtle Lottie animations from LottieFiles (can be replaced with any valid JSON URL)
+    // These are intentionally simple, subtle animations suitable for professional UI.
+    //
+    // If you want to replace them: open lottiefiles.com, pick an animation, copy the "JSON" direct asset URL (assetsX.lottiefiles.com/...), and paste it below.
+    const lottieUrls = {
+      sgpa: 'https://assets2.lottiefiles.com/packages/lf20_jcikwtux.json',
+      cgpa: 'https://assets7.lottiefiles.com/packages/lf20_touohxv0.json',
+      perc: 'https://assets9.lottiefiles.com/packages/lf20_0yfsb3a1.json',
+      // ADDED: minimal spinner for click-loading (small size)
+      loader: 'https://assets2.lottiefiles.com/packages/lf20_usmfx6bp.json'
+    };
+
+    // Load them (best-effort). If a URL 404s, the failure is handled with fallback.
+    loadLottie('anim-sgpa', lottieUrls.sgpa, true, true);
+    loadLottie('anim-cgpa', lottieUrls.cgpa, true, true);
+    loadLottie('anim-perc', lottieUrls.perc, true, true);
+
+    // ADDED: prepare loader animation (kept paused until shown)
+    loadLottie('loaderAnim', lottieUrls.loader, true, true);
+
+    // Enhance tap feedback on mobile (fast)
+    const cards = document.querySelectorAll('.card');
+    const overlay = document.getElementById('loaderOverlay');
+
+    function showLoader(){
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden','false');
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('touchstart', () => card.classList.add('is-touching'));
+      card.addEventListener('touchend', () => card.classList.remove('is-touching'));
+      card.addEventListener('mousedown', () => card.classList.add('is-touching'));
+      card.addEventListener('mouseup', () => card.classList.remove('is-touching'));
+      // keyboard accessibility: Enter also navigates (anchor already handles it)
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+
+      // ADDED: loader on click before navigation (normal clicks only)
+      card.addEventListener('click', (e) => {
+        // allow new-tab or modified clicks to behave normally
+        if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        const href = card.getAttribute('href');
+        if(!href || href.startsWith('#')) return;
+        e.preventDefault();
+        showLoader();
+        // small delay so overlay paints before navigation
+        setTimeout(()=>{ window.location.href = href; }, 180);
+      });
+    });
+
+    // Prevent default context menu on long-press in WebView (optional)
+    document.addEventListener('contextmenu', e => {
+      // Keep it lean — allow if ctrl/meta pressed
+      if(!e.ctrlKey && !e.metaKey) e.preventDefault();
+    });
+
+    // Ensure proper viewport height in Android WebView (mobile browser address bar issues)
+    function setVhUnit(){
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVhUnit();
+    window.addEventListener('resize', setVhUnit);
+  </script>
+</body>
+</html>
