@@ -13,19 +13,32 @@
 
   <style>
     :root{
-      --bg:#0b0b0c;           /* deep black */
-      --panel:#0f0f10;        /* slightly off-black for depth */
-      --muted:#bdbdbd;        /* light gray text */
-      --accent:#ff7a18;       /* orange (no neon) */
-      --accent-strong:#ff6a00;
+      /* VTU Theme Colors */
+      --vtu-maroon:        #7A1F1F;   /* Primary maroon */
+      --vtu-maroon-dark:   #5F1414;   /* Darker maroon accent */
+      --vtu-gold:          #C99A2F;   /* Official VTU gold */
+      --vtu-gold-dim:      #B38525;   /* Softer gold tone */
+
+      /* Neutral & Background Colors */
+      --bg:                #FAFAFB;   /* Page background */
+      --card-bg:           #FFFFFF;   /* Card / tile background */
+      --muted:             #6B6B6B;   /* Muted text */
+
+      /* UI Utility Colors */
+      --glass-border:      rgba(122,31,31,0.06);  /* Subtle border */
+
+      /* Legacy tokens mapped to VTU palette */
+      --panel: var(--card-bg);
+      --accent: var(--vtu-gold);
+      --accent-strong: var(--vtu-maroon);
       --radius:14px;
-      --nav-top-h:64px;      /* reserved top */
-      --nav-bottom-h:80px;   /* reserved bottom */
+      --nav-top-h:64px;
+      --nav-bottom-h:80px;
       --card-h:84px;
       --max-width:720px;
       --safe-gap:16px;
-      --glow:0 8px 24px rgba(255,122,24,0.12);
-      --glow-strong:0 14px 40px rgba(255,122,24,0.16);
+      --glow:0 8px 24px rgba(201,154,47,0.12);
+      --glow-strong:0 14px 40px rgba(201,154,47,0.16);
     }
 
     /* Mobile-first base */
@@ -33,7 +46,7 @@
       height:100%;
       margin:0;
       background:var(--bg);
-      color:white;
+      color:var(--vtu-maroon-dark);
       font-family:'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -81,8 +94,8 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+      box-shadow: inset 0 1px 0 rgba(0,0,0,0.02);
     }
 
     .logo img{
@@ -96,7 +109,7 @@
       font-weight:700;
       letter-spacing:1px;
       font-size:18px;
-      color:white;
+      color:var(--vtu-maroon-dark);
       text-align:center;
     }
 
@@ -125,7 +138,9 @@
     /* the three cards/buttons */
     .card {
       height:var(--card-h);
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      background:
+        linear-gradient(180deg, rgba(122,31,31,0.02), rgba(122,31,31,0.01)),
+        var(--card-bg);
       border-radius:12px;
       display:flex;
       align-items:center;
@@ -137,7 +152,7 @@
       color:inherit;
       transition:transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
       will-change:transform, box-shadow;
-      border:1px solid rgba(255,255,255,0.03);
+      border:1px solid var(--glass-border);
       user-select:none;
       -webkit-user-select:none;
       outline: none;
@@ -151,8 +166,8 @@
       align-items:center;
       justify-content:center;
       border-radius:10px;
-      background:rgba(255,255,255,0.01);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      background:rgba(122,31,31,0.04);
+      box-shadow: inset 0 1px 0 rgba(122,31,31,0.06);
     }
 
     .card .meta {
@@ -168,7 +183,7 @@
     .card .meta .name {
       font-size:16px;
       font-weight:600;
-      color:white;
+      color:var(--vtu-maroon-dark);
       white-space:nowrap;
       text-overflow:ellipsis;
       overflow:hidden;
@@ -192,11 +207,11 @@
 
     .card:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255,122,24,0.12);
+      box-shadow: 0 0 0 3px rgba(201,154,47,0.18);
       transform: translateY(-4px);
     }
 
-    /* orange accent bar on left */
+    /* orange/gold accent bar on left */
     .card::before{
       content:"";
       width:6px;
@@ -211,7 +226,7 @@
     .card:active::before{ transform:scaleY(.98); }
 
     /* subtle glow on the anim */
-    .card:hover .anim { box-shadow: 0 8px 30px rgba(255,122,24,0.08); transform: translateY(-2px); }
+    .card:hover .anim { box-shadow: 0 8px 30px rgba(122,31,31,0.12); transform: translateY(-2px); }
 
     /* bottom reserved nav area (future) */
     .bottom-reserved {
@@ -255,22 +270,22 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(255,255,255,0.02);
+      background:rgba(122,31,31,0.04);
       color:var(--muted);
       font-size:20px;
     }
 
-    /* ADDED: keep the left accent line always visible on all cards */
+    /* keep the left accent line always visible on all cards */
     .card::before{ background:var(--accent); }
 
-    /* ADDED: tiny loader overlay */
+    /* tiny loader overlay */
     .loader-overlay{
       position:fixed;
       inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(11,11,12,0.55);
+      background:rgba(95,20,20,0.55);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       z-index:9999;
@@ -287,7 +302,7 @@
       width:64px;
       height:64px;
       border-radius:12px;
-      background:rgba(255,255,255,0.02);
+      background:rgba(122,31,31,0.02);
       box-shadow: var(--glow);
       display:flex;
       align-items:center;
@@ -352,15 +367,15 @@
     <footer class="bottom-reserved" aria-hidden="true">
       <!-- Future bottom nav / tabs live here -->
       <div style="width:100%;max-width:680px;display:flex;justify-content:center;gap:12px;">
-        <div style="height:56px;width:56px;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Home</div>
-        <div style="height:56px;flex:1;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Explore</div>
-        <div style="height:56px;width:56px;border-radius:12px;background:rgba(255,255,255,0.01);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Me</div>
+        <div style="height:56px;width:56px;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Home</div>
+        <div style="height:56px;flex:1;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Explore</div>
+        <div style="height:56px;width:56px;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Me</div>
       </div>
     </footer>
 
   </div>
 
-  <!-- ADDED: tiny global loader overlay -->
+  <!-- tiny global loader overlay -->
   <div id="loaderOverlay" class="loader-overlay" aria-hidden="true" aria-live="polite" role="status">
     <div class="loader-box">
       <div id="loaderAnim" class="loader-anim"></div>
@@ -411,7 +426,7 @@
       sgpa: 'https://assets2.lottiefiles.com/packages/lf20_jcikwtux.json',
       cgpa: 'https://assets7.lottiefiles.com/packages/lf20_touohxv0.json',
       perc: 'https://assets9.lottiefiles.com/packages/lf20_0yfsb3a1.json',
-      // ADDED: minimal spinner for click-loading (small size)
+      // minimal spinner for click-loading (small size)
       loader: 'https://assets2.lottiefiles.com/packages/lf20_usmfx6bp.json'
     };
 
@@ -420,7 +435,7 @@
     loadLottie('anim-cgpa', lottieUrls.cgpa, true, true);
     loadLottie('anim-perc', lottieUrls.perc, true, true);
 
-    // ADDED: prepare loader animation (kept paused until shown)
+    // prepare loader animation (kept paused until shown)
     loadLottie('loaderAnim', lottieUrls.loader, true, true);
 
     // Enhance tap feedback on mobile (fast)
@@ -445,22 +460,19 @@
         }
       });
 
-      // ADDED: loader on click before navigation (normal clicks only)
+      // loader on click before navigation (normal clicks only)
       card.addEventListener('click', (e) => {
-        // allow new-tab or modified clicks to behave normally
         if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         const href = card.getAttribute('href');
         if(!href || href.startsWith('#')) return;
         e.preventDefault();
         showLoader();
-        // small delay so overlay paints before navigation
         setTimeout(()=>{ window.location.href = href; }, 180);
       });
     });
 
     // Prevent default context menu on long-press in WebView (optional)
     document.addEventListener('contextmenu', e => {
-      // Keep it lean — allow if ctrl/meta pressed
       if(!e.ctrlKey && !e.metaKey) e.preventDefault();
     });
 
