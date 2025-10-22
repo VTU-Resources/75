@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>MY VTU — Dashboard</title>
 
-  <!-- Google Font (Poppins) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
   <!-- Lottie (lottie-web) - preconnect for faster loading -->
   <link rel="preconnect" href="https://assets2.lottiefiles.com">
   <link rel="preconnect" href="https://assets7.lottiefiles.com">
@@ -36,13 +33,13 @@
       --max-width: 720px;
     }
 
-    /* Mobile-first base */
+    /* Mobile-first base with Calibri font */
     html,body{
       height: 100%;
       margin: 0;
       background: var(--bg);
       color: #1a1a1a;
-      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family: Calibri, 'Segoe UI', Candara, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
@@ -107,17 +104,17 @@
     .title {
       font-weight: 700;
       letter-spacing: 0.5px;
-      font-size: 16px;
+      font-size: 17px;
       color: var(--vtu-maroon);
     }
 
-    /* MODIFICATION: Removed vertical centering to eliminate top space */
+    /* center area */
     .center-area {
       flex: 1 1 auto;
       display: flex;
-      flex-direction: column; /* Changed from flex */
-      align-items: flex-start; /* Changed from center */
-      justify-content: flex-start; /* Changed from center */
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
       padding: 18px 16px;
       box-sizing: border-box;
       min-height: 0;
@@ -130,7 +127,7 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      justify-content: flex-start; /* Changed from center */
+      justify-content: flex-start;
       gap: 13px;
       box-sizing: border-box;
     }
@@ -181,37 +178,29 @@
     }
 
     .card .meta .name {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--vtu-maroon);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      width: 100%;
     }
 
     .card .meta .desc {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
       line-height: 1.35;
     }
 
-    /* hover / focus / active effects */
     .card:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 18px rgba(122,31,31,0.1);
       border-color: var(--vtu-maroon);
     }
-
     .card:active {
       transform: translateY(-1px) scale(.995);
       box-shadow: 0 8px 24px rgba(122,31,31,0.14);
     }
-
-    .card:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(122,31,31,0.15);
-      transform: translateY(-2px);
+    .card:hover .anim {
+      box-shadow: 0 4px 16px rgba(201,154,47,0.14);
+      transform: scale(1.04);
     }
 
     .card::before{
@@ -229,14 +218,6 @@
       transform: scaleY(1.08);
       height: 64%;
     }
-    .card:active::before{
-      transform: scaleY(.94);
-    }
-
-    .card:hover .anim {
-      box-shadow: 0 4px 16px rgba(201,154,47,0.14);
-      transform: scale(1.04);
-    }
 
     /* bottom area */
     .bottom-reserved {
@@ -250,17 +231,16 @@
       background: var(--card-bg);
       border-top: 1px solid var(--glass-border);
     }
-    
-    /* MODIFICATION: New professional swipe-to-unlock bar */
+
+    /* MODIFICATION: Professional swipe bar with Calibri font */
     .swipe-container {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
+      background: linear-gradient(135deg, rgba(122,31,31,0.08), rgba(122,31,31,0.04));
       border-radius: 14px;
       padding: 0;
       box-sizing: border-box;
-      box-shadow: 0 3px 12px rgba(122,31,31,0.18);
-      border: 1.5px solid rgba(255,255,255,0.15);
+      border: 1.5px solid var(--glass-border);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -273,28 +253,13 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      font-weight: bold; /* Bold text */
+      color: var(--vtu-maroon-dark);
+      opacity: 0.6;
       letter-spacing: 0.5px;
       pointer-events: none;
       transition: opacity 200ms ease;
-    }
-
-    .swipe-text-overlay {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      -webkit-mask-image: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent);
-      mask-image: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent);
-      animation: swipeTextShimmer 2.5s infinite;
-    }
-
-    @keyframes swipeTextShimmer {
-      0% { -webkit-mask-position: -150%; mask-position: -150%; }
-      100% { -webkit-mask-position: 250%; mask-position: 250%; }
     }
 
     .swipe-track {
@@ -310,7 +275,7 @@
     .swipe-thumb {
       width: 44px;
       height: 44px;
-      background: #fff;
+      background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
       border-radius: 11px;
       position: absolute;
       left: 4px;
@@ -320,8 +285,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--vtu-maroon);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(122,31,31,0.25);
+      border: 1.5px solid rgba(255,255,255,0.2);
       z-index: 2;
     }
     .swipe-thumb:active { cursor: grabbing; }
@@ -329,34 +295,7 @@
     .swipe-thumb::before {
       content: '→';
       font-weight: 700;
-      font-size: 20px;
-    }
-
-    /* responsive tweaks for very small screens */
-    @media (max-width: 360px){
-      .logo{ width: 36px; height: 36px; }
-      .title{ font-size: 15px; }
-      .card{ padding: 12px 14px; height: 82px; }
-      .card .anim{ width: 50px; height: 50px; }
-      .center-area{ padding: 16px 14px; }
-    }
-
-    /* large phones / tablets */
-    @media (min-width: 720px){
-      .center-inner{ gap: 15px; }
-    }
-
-    /* fallback for when lottie fails */
-    .lottie-fallback {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(122,31,31,0.04);
-      color: var(--vtu-maroon);
-      font-size: 20px;
+      font-size: 22px;
     }
 
     /* loader overlay */
@@ -391,12 +330,7 @@
       padding: 10px;
       border: 1.5px solid var(--glass-border);
     }
-    .loader-box .lottie-fallback{
-      width: 42px;
-      height: 42px;
-      font-size: 18px;
-    }
-
+    
     .anim > * { width: 100%; height: 100%; }
   </style>
 </head>
@@ -406,7 +340,6 @@
     <header class="top-reserved">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <!-- Make sure 'logo.png' is in the same folder as this HTML file -->
           <img src="logo.png" alt="MY VTU logo" onerror="this.style.display='none'">
         </div>
         <div class="title">MY VTU</div>
@@ -415,81 +348,62 @@
 
     <main class="center-area" id="main">
       <div class="center-inner" role="main" aria-label="Main dashboard">
-
-        <a class="card" id="sgpaCard" href="sgpa.html" role="link" aria-label="Open SGPA Calculator">
+        <a class="card" href="sgpa.html" aria-label="Open SGPA Calculator">
           <div class="anim" id="anim-sgpa" aria-hidden="true"></div>
           <div class="meta">
             <div class="name">SGPA Calculator</div>
             <div class="desc">Semester grade point calculator — fast & accurate</div>
           </div>
         </a>
-
-        <a class="card" id="cgpaCard" href="cgpa.html" role="link" aria-label="Open CGPA Calculator">
+        <a class="card" href="cgpa.html" aria-label="Open CGPA Calculator">
           <div class="anim" id="anim-cgpa" aria-hidden="true"></div>
           <div class="meta">
             <div class="name">CGPA Calculator</div>
             <div class="desc">Cumulative GPA builder — track progress semester-wise</div>
           </div>
         </a>
-
-        <a class="card" id="percCard" href="percentage.html" role="link" aria-label="Open Percentage Calculator">
+        <a class="card" href="percentage.html" aria-label="Open Percentage Calculator">
           <div class="anim" id="anim-perc" aria-hidden="true"></div>
           <div class="meta">
             <div class="name">Percentage Calculator</div>
             <div class="desc">Convert CGPA to percentage or compute percent scores</div>
           </div>
         </a>
-
       </div>
     </main>
 
     <footer class="bottom-reserved">
-      <!-- MODIFICATION: Replaced with the new swipe bar -->
       <div class="swipe-container" id="swipeContainer">
         <div class="swipe-track" id="swipeTrack"></div>
         <div class="swipe-thumb" id="swipeThumb"></div>
-        <div class="swipe-text" id="swipeText">
-          <div class="swipe-text-overlay">Slide to Home</div>
-        </div>
+        <div class="swipe-text" id="swipeText">Slide to Home</div>
       </div>
     </footer>
 
   </div>
 
-  <div id="loaderOverlay" class="loader-overlay" aria-hidden="true" aria-live="polite" role="status">
+  <div id="loaderOverlay" class="loader-overlay" aria-hidden="true" role="status">
     <div class="loader-box">
       <div id="loaderAnim" class="loader-anim"></div>
     </div>
   </div>
 
   <script>
-    // Fast lottie loading with instant fallback
-    function loadLottie(targetId, jsonUrl, loop=true, autoplay=true, renderer='svg') {
+    // Lottie animations loader
+    function loadLottie(targetId, jsonUrl) {
       const target = document.getElementById(targetId);
       if(!target) return;
-      
-      const fallbackTimer = setTimeout(() => {
-        if(target.childElementCount === 0) target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
-      }, 250);
-
       try {
         const anim = lottie.loadAnimation({
           container: target,
-          renderer: renderer,
-          loop: loop,
-          autoplay: autoplay,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
           path: jsonUrl,
-          rendererSettings: { progressiveLoad: true, hideOnTransparent: true }
         });
         anim.setSpeed(1.15);
-        anim.addEventListener('DOMLoaded', ()=> clearTimeout(fallbackTimer));
-        anim.addEventListener('data_failed', ()=> {
-          clearTimeout(fallbackTimer);
-          target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
-        });
       } catch(e) {
-        clearTimeout(fallbackTimer);
-        target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
+        // Fallback or error handling can go here
       }
     }
 
@@ -511,21 +425,20 @@
 
     function showLoader(){
       overlay.classList.add('show');
-      overlay.setAttribute('aria-hidden','false');
     }
 
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
-        if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        if(e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         const href = card.getAttribute('href');
-        if(!href || href.startsWith('#')) return;
+        if(!href) return;
         e.preventDefault();
         showLoader();
-        setTimeout(()=>{ window.location.href = href; }, 140);
+        setTimeout(() => { window.location.href = href; }, 140);
       });
     });
 
-    // MODIFICATION: New professional swipe gesture logic
+    // MODIFICATION: Professional swipe gesture logic
     const swipeContainer = document.getElementById('swipeContainer');
     const swipeThumb = document.getElementById('swipeThumb');
     const swipeTrack = document.getElementById('swipeTrack');
@@ -536,7 +449,6 @@
     let thumbStartX = 4; // Initial position from CSS
 
     function handleSwipeStart(e) {
-      if (isSwiping) return;
       isSwiping = true;
       startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       swipeThumb.style.transition = 'none';
@@ -557,15 +469,14 @@
       const thumbWidth = swipeThumb.offsetWidth;
       const maxSwipe = containerWidth - thumbWidth - (thumbStartX * 2);
 
-      // Clamp movement within the container bounds
       let newThumbPos = Math.max(0, deltaX) + thumbStartX;
       newThumbPos = Math.min(newThumbPos, maxSwipe + thumbStartX);
       
       const swipeProgress = (newThumbPos - thumbStartX) / maxSwipe;
 
       swipeThumb.style.transform = `translateX(${newThumbPos - thumbStartX}px) translateY(-50%)`;
-      swipeTrack.style.width = `${newThumbPos + (thumbWidth / 2) - thumbStartX}px`;
-      swipeText.style.opacity = 1 - (swipeProgress * 2);
+      swipeTrack.style.width = `${newThumbPos - thumbStartX + (thumbWidth / 2)}px`;
+      swipeText.style.opacity = Math.max(0, 0.6 - (swipeProgress * 1.5));
     }
 
     function handleSwipeEnd() {
@@ -582,33 +493,20 @@
       swipeThumb.style.cursor = 'grab';
       document.body.style.cursor = '';
 
-      // If swiped more than 65%, complete the action
       if (swipeProgress > 0.65) {
         completeSwipe();
       } else {
-        // Reset to initial state
         swipeThumb.style.transition = 'transform 300ms cubic-bezier(.2,1,.4,1)';
         swipeTrack.style.transition = 'width 300ms cubic-bezier(.2,1,.4,1)';
         swipeText.style.transition = 'opacity 300ms ease-in';
 
         swipeThumb.style.transform = `translateX(0) translateY(-50%)`;
         swipeTrack.style.width = '0px';
-        swipeText.style.opacity = '1';
+        swipeText.style.opacity = '0.6';
       }
     }
 
     function completeSwipe() {
-      const thumbWidth = swipeThumb.offsetWidth;
-      const containerWidth = swipeContainer.offsetWidth;
-      const finalPos = containerWidth - thumbWidth - thumbStartX;
-
-      swipeThumb.style.transition = 'transform 200ms ease-out';
-      swipeTrack.style.transition = 'width 200ms ease-out';
-      swipeText.style.opacity = '0';
-      
-      swipeThumb.style.transform = `translateX(${finalPos - thumbStartX}px) translateY(-50%)`;
-      swipeTrack.style.width = `${containerWidth}px`;
-      
       showLoader();
       setTimeout(() => {
         window.location.href = 'Home.html';
@@ -624,10 +522,6 @@
     document.addEventListener('touchmove', handleSwipeMove, { passive: false });
     document.addEventListener('touchend', handleSwipeEnd);
 
-    // Prevent context menu on long press
-    document.addEventListener('contextmenu', e => {
-      if(!e.ctrlKey && !e.metaKey) e.preventDefault();
-    });
   </script>
 </body>
 </html>
