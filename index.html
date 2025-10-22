@@ -50,7 +50,7 @@
       overflow-x: hidden;
     }
 
-    /* main shell */
+    /* main shell - full height utilization */
     .app {
       min-height: 100vh;
       display: flex;
@@ -63,7 +63,7 @@
       margin: 0 auto;
     }
 
-    /* top nav - minimal */
+    /* top nav - minimal, reduced space */
     .top-reserved {
       height: var(--nav-top-h);
       display: flex;
@@ -111,15 +111,16 @@
       color: var(--vtu-maroon);
     }
 
-    /* center area - maximum space utilization */
+    /* center area - maximized space, reduced padding for perfect fit */
     .center-area {
       flex: 1 1 auto;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px 16px;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 12px 16px 8px; /* Reduced top padding to remove extra space */
       box-sizing: border-box;
       min-height: 0;
+      gap: 0; /* No gap between cards for tighter fit */
     }
 
     .center-inner {
@@ -128,12 +129,13 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      justify-content: center;
-      gap: 13px;
+      justify-content: flex-start; /* Start from top to eliminate vertical space */
+      gap: 8px; /* Minimal gap between cards */
       box-sizing: border-box;
+      flex: 1;
     }
 
-    /* the three cards - professional with borders */
+    /* the three cards - professional with borders, full width */
     .card {
       height: var(--card-h);
       background: var(--card-bg);
@@ -153,6 +155,7 @@
       -webkit-user-select: none;
       outline: none;
       box-shadow: 0 1px 4px rgba(122,31,31,0.06);
+      flex: 1 0 auto; /* Allow cards to grow but not exceed height */
     }
 
     .card .anim {
@@ -238,7 +241,7 @@
       transform: scale(1.04); 
     }
 
-    /* bottom nav area - swipe gesture bar */
+    /* bottom nav area - swipe gesture bar, styled like banking apps (e.g., Canara Bank/Microsoft) */
     .bottom-reserved {
       height: var(--nav-bottom-h);
       display: flex;
@@ -257,19 +260,19 @@
       height: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
+      justify-content: flex-start; /* Start text from left for realistic slide feel */
+      background: rgba(255,255,255,0.8); /* Semi-transparent start for 'empty' feel */
       border-radius: 14px;
       padding: 0 20px;
       box-sizing: border-box;
-      box-shadow: 0 3px 12px rgba(122,31,31,0.18);
-      border: 1.5px solid rgba(255,255,255,0.15);
+      box-shadow: 0 3px 12px rgba(122,31,31,0.08); /* Subtle shadow like banking apps */
+      border: 1.5px solid var(--glass-border);
       cursor: grab;
       user-select: none;
       -webkit-user-select: none;
       position: relative;
       overflow: hidden;
-      transition: transform 120ms ease;
+      transition: background 200ms ease, transform 120ms ease;
     }
 
     .swipe-bar:active {
@@ -281,19 +284,21 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: white;
+      color: var(--vtu-maroon); /* Maroon for realistic, professional look */
       font-weight: 600;
       font-size: 14px;
       letter-spacing: 0.3px;
       position: relative;
       z-index: 2;
       pointer-events: none;
-      transition: transform 200ms cubic-bezier(.2,.9,.2,1);
+      transition: transform 200ms cubic-bezier(.2,.9,.2,1), color 200ms ease;
+      white-space: nowrap; /* Prevent text wrap */
     }
 
     .swipe-icon {
       font-size: 18px;
       animation: swipeHint 2s ease-in-out infinite;
+      transition: transform 200ms ease;
     }
 
     @keyframes swipeHint {
@@ -306,14 +311,21 @@
       left: 0;
       top: 0;
       height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--vtu-gold), var(--vtu-gold-dim));
+      width: 0%; /* Starts empty */
+      background: linear-gradient(90deg, var(--vtu-maroon), var(--vtu-gold)); /* Fills with color on slide */
       transition: width 100ms ease-out;
       border-radius: 13px;
       z-index: 1;
     }
 
-    /* hint removed for cleaner look */
+    /* On swipe, change bar background to filled and text color */
+    .swipe-bar.swiping .swipe-bar {
+      background: rgba(255,255,255,0.95);
+    }
+
+    .swipe-bar.swiping .swipe-content {
+      color: white;
+    }
 
     /* responsive tweaks for very small screens */
     @media (max-width: 360px){
@@ -321,12 +333,12 @@
       .title{ font-size: 15px; }
       .card{ padding: 12px 14px; height: 82px; }
       .card .anim{ width: 50px; height: 50px; }
-      .center-area{ padding: 16px 14px; }
+      .center-area{ padding: 10px 14px 6px; } /* Further reduce padding */
     }
 
     /* large phones / tablets */
     @media (min-width: 720px){
-      .center-inner{ gap: 15px; }
+      .center-inner{ gap: 10px; }
     }
 
     /* fallback for when lottie fails */
@@ -400,7 +412,7 @@
       </div>
     </header>
 
-    <!-- Center main content -->
+    <!-- Center main content - adjusted for no extra space -->
     <main class="center-area" id="main">
       <div class="center-inner" role="main" aria-label="Main dashboard">
 
@@ -434,7 +446,7 @@
       </div>
     </main>
 
-    <!-- Bottom swipe-to-home bar -->
+    <!-- Bottom swipe-to-home bar - enhanced for banking app style -->
     <footer class="bottom-reserved">
       <div class="swipe-bar" id="swipeBar">
         <div class="swipe-progress" id="swipeProgress"></div>
@@ -550,7 +562,7 @@
       });
     });
 
-    // SWIPE TO HOME GESTURE - PERFECT IMPLEMENTATION
+    // SWIPE TO HOME GESTURE - Enhanced for Canara Bank/Microsoft style: starts empty, fills realistically
     const swipeBar = document.getElementById('swipeBar');
     const swipeProgress = document.getElementById('swipeProgress');
     const swipeContent = document.getElementById('swipeContent');
@@ -565,6 +577,7 @@
       startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       currentX = startX;
       swipeBar.style.transition = 'none';
+      swipeBar.classList.add('swiping'); // Add class for color change
       swipeProgress.style.transition = 'width 50ms linear';
     }
 
@@ -579,7 +592,7 @@
         const progress = Math.min((deltaX / barWidth) * 100, 100);
         swipeProgress.style.width = progress + '%';
         
-        // Move content slightly with swipe
+        // Move content slightly with swipe for realistic feel
         const contentShift = Math.min(deltaX * 0.3, 30);
         swipeContent.style.transform = `translateX(${contentShift}px)`;
         
@@ -598,6 +611,7 @@
       const progress = (deltaX / barWidth);
       
       isSwiping = false;
+      swipeBar.classList.remove('swiping'); // Reset class
       
       if (progress >= swipeThreshold) {
         completeSwipe();
@@ -606,17 +620,18 @@
         swipeProgress.style.transition = 'width 200ms ease-out';
         swipeProgress.style.width = '0%';
         swipeContent.style.transform = 'translateX(0)';
-        swipeBar.style.transition = 'transform 120ms ease';
+        swipeBar.style.transition = 'background 200ms ease, transform 120ms ease';
       }
     }
 
     function completeSwipe() {
-      // Visual feedback
+      // Visual feedback: full fill and scale
       swipeProgress.style.width = '100%';
       swipeContent.style.transform = 'translateX(40px)';
       swipeBar.style.transform = 'scale(0.96)';
+      swipeBar.style.background = 'rgba(122,31,31,0.9)'; // Final filled state
       
-      // Show loader and navigate
+      // Show loader and redirect to Home.html
       showLoader();
       setTimeout(() => {
         window.location.href = 'Home.html';
