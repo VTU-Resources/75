@@ -8,327 +8,399 @@
   <!-- Google Font (Poppins) -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Lottie (lottie-web) -->
+  <!-- Lottie (lottie-web) - preconnect for faster loading -->
+  <link rel="preconnect" href="https://assets2.lottiefiles.com">
+  <link rel="preconnect" href="https://assets7.lottiefiles.com">
+  <link rel="preconnect" href="https://assets9.lottiefiles.com">
   <script src="https://unpkg.com/lottie-web@latest/build/player/lottie.min.js"></script>
 
   <style>
     :root{
       /* VTU Theme Colors */
-      --vtu-maroon:        #7A1F1F;   /* Primary maroon */
-      --vtu-maroon-dark:   #5F1414;   /* Darker maroon accent */
-      --vtu-gold:          #C99A2F;   /* Official VTU gold */
-      --vtu-gold-dim:      #B38525;   /* Softer gold tone */
+      --vtu-maroon: #7A1F1F;
+      --vtu-maroon-dark: #5F1414;
+      --vtu-gold: #C99A2F;
+      --vtu-gold-dim: #B38525;
 
       /* Neutral & Background Colors */
-      --bg:                #FAFAFB;   /* Page background */
-      --card-bg:           #FFFFFF;   /* Card / tile background */
-      --muted:             #6B6B6B;   /* Muted text */
+      --bg: #FAFAFB;
+      --card-bg: #FFFFFF;
+      --muted: #6B6B6B;
 
       /* UI Utility Colors */
-      --glass-border:      rgba(122,31,31,0.06);  /* Subtle border */
+      --glass-border: rgba(122,31,31,0.08);
 
-      /* Legacy tokens mapped to VTU palette */
-      --panel: var(--card-bg);
-      --accent: var(--vtu-gold);
-      --accent-strong: var(--vtu-maroon);
-      --radius:14px;
-      --nav-top-h:64px;
-      --nav-bottom-h:80px;
-      --card-h:84px;
-      --max-width:720px;
-      --safe-gap:16px;
-      --glow:0 8px 24px rgba(201,154,47,0.12);
-      --glow-strong:0 14px 40px rgba(201,154,47,0.16);
+      --nav-top-h: 54px;
+      --nav-bottom-h: 68px;
+      --card-h: 86px;
+      --max-width: 720px;
     }
 
     /* Mobile-first base */
     html,body{
-      height:100%;
-      margin:0;
-      background:var(--bg);
-      color:var(--vtu-maroon-dark);
-      font-family:'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      -webkit-tap-highlight-color: transparent; /* avoid blue highlight on Android */
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: #1a1a1a;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+      overflow-x: hidden;
     }
 
     /* main shell */
     .app {
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      justify-content:flex-start;
-      box-sizing:border-box;
-      padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
-      max-width:var(--max-width);
-      margin:0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      max-width: var(--max-width);
+      margin: 0 auto;
     }
 
-    /* top nav reserved space (for future) */
+    /* top nav - minimal */
     .top-reserved {
-      height:var(--nav-top-h);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-      padding:0 8px;
-      box-sizing:border-box;
+      height: var(--nav-top-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--glass-border);
+      background: var(--card-bg);
     }
 
     /* logo + title */
     .brand {
-      display:flex;
-      align-items:center;
-      gap:12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .logo {
-      width:44px;
-      height:44px;
-      border-radius:50%;
-      overflow:hidden;
-      flex-shrink:0;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-      box-shadow: inset 0 1px 0 rgba(0,0,0,0.02);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
+      box-shadow: 0 2px 6px rgba(122,31,31,0.14);
+      border: 2px solid rgba(255,255,255,0.9);
     }
 
     .logo img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .title {
-      font-weight:700;
-      letter-spacing:1px;
-      font-size:18px;
-      color:var(--vtu-maroon-dark);
-      text-align:center;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-size: 16px;
+      color: var(--vtu-maroon);
     }
 
-    /* center area - fills remaining vertical space but leaves bottom nav reserved */
+    /* center area - maximum space utilization */
     .center-area {
-      flex:1 1 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px;
-      box-sizing:border-box;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 16px;
+      box-sizing: border-box;
+      min-height: 0;
     }
 
     .center-inner {
-      width:100%;
-      max-width:520px;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      justify-content:center;
-      gap:16px;
-      padding:12px;
-      box-sizing:border-box;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 13px;
+      box-sizing: border-box;
     }
 
-    /* the three cards/buttons */
+    /* the three cards - professional with borders */
     .card {
-      height:var(--card-h);
-      background:
-        linear-gradient(180deg, rgba(122,31,31,0.02), rgba(122,31,31,0.01)),
-        var(--card-bg);
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:12px;
-      box-sizing:border-box;
-      cursor:pointer;
-      text-decoration:none;
-      color:inherit;
-      transition:transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
-      will-change:transform, box-shadow;
-      border:1px solid var(--glass-border);
-      user-select:none;
-      -webkit-user-select:none;
+      height: var(--card-h);
+      background: var(--card-bg);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 15px;
+      box-sizing: border-box;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms cubic-bezier(.2,.9,.2,1), border-color 180ms ease;
+      will-change: transform, box-shadow;
+      border: 1.5px solid var(--glass-border);
+      user-select: none;
+      -webkit-user-select: none;
       outline: none;
+      box-shadow: 0 1px 4px rgba(122,31,31,0.06);
     }
 
     .card .anim {
-      width:56px;
-      height:56px;
-      flex-shrink:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:10px;
-      background:rgba(122,31,31,0.04);
-      box-shadow: inset 0 1px 0 rgba(122,31,31,0.06);
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(122,31,31,0.04), rgba(122,31,31,0.01));
+      border: 1px solid rgba(122,31,31,0.06);
+      transition: transform 180ms ease, box-shadow 180ms ease;
     }
 
     .card .meta {
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      align-items:flex-start;
-      justify-content:center;
-      flex:1 1 auto;
-      min-width:0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: flex-start;
+      justify-content: center;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .card .meta .name {
-      font-size:16px;
-      font-weight:600;
-      color:var(--vtu-maroon-dark);
-      white-space:nowrap;
-      text-overflow:ellipsis;
-      overflow:hidden;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--vtu-maroon);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 100%;
     }
 
     .card .meta .desc {
-      font-size:12px;
-      color:var(--muted);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
     }
 
-    /* subtle hover / focus / active effects (tap friendly) */
+    /* hover / focus / active effects */
     .card:hover {
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: var(--glow);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(122,31,31,0.1);
+      border-color: var(--vtu-maroon);
     }
 
     .card:active {
-      transform:translateY(-1px) scale(.995);
-      box-shadow: var(--glow-strong);
+      transform: translateY(-1px) scale(.995);
+      box-shadow: 0 8px 24px rgba(122,31,31,0.14);
     }
 
     .card:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(201,154,47,0.18);
-      transform: translateY(-4px);
+      box-shadow: 0 0 0 3px rgba(122,31,31,0.15);
+      transform: translateY(-2px);
     }
 
-    /* orange/gold accent bar on left */
+    /* maroon accent bar on left */
     .card::before{
-      content:"";
-      width:6px;
-      height:64%;
-      background:transparent;
-      border-radius:6px;
-      margin-right:8px;
-      transition:background 220ms ease, transform 220ms ease;
-      transform-origin:center;
+      content: "";
+      width: 4px;
+      height: 56%;
+      background: linear-gradient(180deg, var(--vtu-maroon), var(--vtu-maroon-dark));
+      border-radius: 6px;
+      margin-right: 5px;
+      transition: background 180ms ease, transform 180ms ease, height 180ms ease;
+      transform-origin: center;
     }
-    .card:hover::before{ background:var(--accent); transform:scaleY(1.03); }
-    .card:active::before{ transform:scaleY(.98); }
+    .card:hover::before{ 
+      background: linear-gradient(180deg, var(--vtu-gold), var(--vtu-gold-dim)); 
+      transform: scaleY(1.08); 
+      height: 64%;
+    }
+    .card:active::before{ 
+      transform: scaleY(.94); 
+    }
 
-    /* subtle glow on the anim */
-    .card:hover .anim { box-shadow: 0 8px 30px rgba(122,31,31,0.12); transform: translateY(-2px); }
+    /* animation container glow */
+    .card:hover .anim { 
+      box-shadow: 0 4px 16px rgba(201,154,47,0.14); 
+      transform: scale(1.04); 
+    }
 
-    /* bottom reserved nav area (future) */
+    /* bottom nav area - swipe gesture bar */
     .bottom-reserved {
-      height:var(--nav-bottom-h);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-      padding:12px;
-      box-sizing:border-box;
+      height: var(--nav-bottom-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      border-top: 1px solid var(--glass-border);
+      background: var(--card-bg);
     }
 
-    /* small hint */
-    .hint {
-      text-align:center;
-      font-size:12px;
-      color:var(--muted);
-      margin-top:6px;
-      margin-bottom:6px;
+    .swipe-bar {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
+      border-radius: 14px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      box-shadow: 0 3px 12px rgba(122,31,31,0.18);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 120ms ease;
     }
+
+    .swipe-bar:active {
+      cursor: grabbing;
+      transform: scale(0.98);
+    }
+
+    .swipe-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 2;
+      pointer-events: none;
+      transition: transform 200ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .swipe-icon {
+      font-size: 18px;
+      animation: swipeHint 2s ease-in-out infinite;
+    }
+
+    @keyframes swipeHint {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(8px); }
+    }
+
+    .swipe-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--vtu-gold), var(--vtu-gold-dim));
+      transition: width 100ms ease-out;
+      border-radius: 13px;
+      z-index: 1;
+    }
+
+    /* hint removed for cleaner look */
 
     /* responsive tweaks for very small screens */
-    @media (max-width:360px){
-      .logo{ width:40px; height:40px; }
-      .title{ font-size:16px; }
-      .card{ padding:10px; height:76px; }
-      .card .anim{ width:52px; height:52px; }
+    @media (max-width: 360px){
+      .logo{ width: 36px; height: 36px; }
+      .title{ font-size: 15px; }
+      .card{ padding: 12px 14px; height: 82px; }
+      .card .anim{ width: 50px; height: 50px; }
+      .center-area{ padding: 16px 14px; }
     }
 
-    /* large phones / tablets — keep centered */
-    @media (min-width:720px){
-      .app{ padding-left:20px; padding-right:20px; }
-      .center-inner{ gap:20px; }
+    /* large phones / tablets */
+    @media (min-width: 720px){
+      .center-inner{ gap: 15px; }
     }
 
     /* fallback for when lottie fails */
     .lottie-fallback {
-      width:48px;
-      height:48px;
-      border-radius:8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(122,31,31,0.04);
-      color:var(--muted);
-      font-size:20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(122,31,31,0.04);
+      color: var(--vtu-maroon);
+      font-size: 20px;
     }
 
-    /* keep the left accent line always visible on all cards */
-    .card::before{ background:var(--accent); }
-
-    /* tiny loader overlay */
+    /* loader overlay */
     .loader-overlay{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(95,20,20,0.55);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      z-index:9999;
-      visibility:hidden;
-      opacity:0;
-      transition:opacity 180ms ease, visibility 0s linear 180ms;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(250,250,251,0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 140ms ease, visibility 0s linear 140ms;
     }
     .loader-overlay.show{
-      visibility:visible;
-      opacity:1;
-      transition:opacity 180ms ease, visibility 0s;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 140ms ease, visibility 0s;
     }
     .loader-box{
-      width:64px;
-      height:64px;
-      border-radius:12px;
-      background:rgba(122,31,31,0.02);
-      box-shadow: var(--glow);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:8px;
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      background: var(--card-bg);
+      box-shadow: 0 6px 20px rgba(122,31,31,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border: 1.5px solid var(--glass-border);
     }
     .loader-box .lottie-fallback{
-      width:40px;height:40px;font-size:18px;
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+    }
+
+    /* Preload animation containers */
+    .anim > * {
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 <body>
   <div class="app" role="application" aria-label="My VTU dashboard">
 
-    <!-- Top reserved nav area -->
-    <header class="top-reserved" aria-hidden="false">
-      <div class="brand" style="align-items:center;">
+    <!-- Top nav - minimal -->
+    <header class="top-reserved">
+      <div class="brand">
         <div class="logo" aria-hidden="true">
-          <!-- Place your circular logo as logo.png in same folder -->
           <img src="logo.png" alt="MY VTU logo" onerror="this.style.display='none'">
         </div>
-        <div class="title" aria-level="1">MY VTU</div>
+        <div class="title">MY VTU</div>
       </div>
     </header>
 
-    <!-- Center main content (cards vertically centered) -->
+    <!-- Center main content -->
     <main class="center-area" id="main">
       <div class="center-inner" role="main" aria-label="Main dashboard">
 
@@ -359,23 +431,23 @@
           </div>
         </a>
 
-        <div class="hint" aria-hidden="true">Tap a tile to continue — smooth, offline friendly UI</div>
       </div>
     </main>
 
-    <!-- Bottom reserved nav area -->
-    <footer class="bottom-reserved" aria-hidden="true">
-      <!-- Future bottom nav / tabs live here -->
-      <div style="width:100%;max-width:680px;display:flex;justify-content:center;gap:12px;">
-        <div style="height:56px;width:56px;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Home</div>
-        <div style="height:56px;flex:1;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Explore</div>
-        <div style="height:56px;width:56px;border-radius:12px;background:rgba(122,31,31,0.04);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;font-size:13px;">Me</div>
+    <!-- Bottom swipe-to-home bar -->
+    <footer class="bottom-reserved">
+      <div class="swipe-bar" id="swipeBar">
+        <div class="swipe-progress" id="swipeProgress"></div>
+        <div class="swipe-content" id="swipeContent">
+          <span class="swipe-icon">→</span>
+          <span>Slide to Home</span>
+        </div>
       </div>
     </footer>
 
   </div>
 
-  <!-- tiny global loader overlay -->
+  <!-- Global loader overlay -->
   <div id="loaderOverlay" class="loader-overlay" aria-hidden="true" aria-live="polite" role="status">
     <div class="loader-box">
       <div id="loaderAnim" class="loader-anim"></div>
@@ -383,7 +455,7 @@
   </div>
 
   <script>
-    // Defensive: prevent default focus outline color from system (no blue)
+    // Prevent default focus outline
     (function(){
       const css = '*:focus{outline:none!important}';
       const s = document.createElement('style');
@@ -391,54 +463,62 @@
       document.head.appendChild(s);
     })();
 
-    // Small utility for safe lottie loading with fallback
+    // Fast lottie loading with instant fallback
     function loadLottie(targetId, jsonUrl, loop=true, autoplay=true, renderer='svg') {
       const target = document.getElementById(targetId);
       if(!target) return;
+      
+      const fallbackTimer = setTimeout(() => {
+        if(target.childElementCount === 0) {
+          target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
+        }
+      }, 250);
+
       try {
-        // lottie global from included CDN
         const anim = lottie.loadAnimation({
           container: target,
           renderer: renderer,
           loop: loop,
           autoplay: autoplay,
-          path: jsonUrl
+          path: jsonUrl,
+          rendererSettings: {
+            progressiveLoad: true,
+            hideOnTransparent: true
+          }
         });
 
-        // subtle speed and idle behavior
-        anim.setSpeed(1);
+        anim.setSpeed(1.15);
+        
         anim.addEventListener('DOMLoaded', ()=> {
-          // small scale animation in on load
-          target.style.transition = 'transform 400ms cubic-bezier(.2,.9,.2,1)';
+          clearTimeout(fallbackTimer);
+        });
+
+        anim.addEventListener('data_failed', ()=> {
+          clearTimeout(fallbackTimer);
+          target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
         });
 
       } catch(e) {
-        // fallback: place a simple icon text
+        clearTimeout(fallbackTimer);
         target.innerHTML = '<div class="lottie-fallback">⚙️</div>';
       }
     }
 
-    // Chosen subtle Lottie animations from LottieFiles (can be replaced with any valid JSON URL)
-    // These are intentionally simple, subtle animations suitable for professional UI.
-    //
-    // If you want to replace them: open lottiefiles.com, pick an animation, copy the "JSON" direct asset URL (assetsX.lottiefiles.com/...), and paste it below.
+    // Lightweight animations
     const lottieUrls = {
       sgpa: 'https://assets2.lottiefiles.com/packages/lf20_jcikwtux.json',
       cgpa: 'https://assets7.lottiefiles.com/packages/lf20_touohxv0.json',
       perc: 'https://assets9.lottiefiles.com/packages/lf20_0yfsb3a1.json',
-      // minimal spinner for click-loading (small size)
       loader: 'https://assets2.lottiefiles.com/packages/lf20_usmfx6bp.json'
     };
 
-    // Load them (best-effort). If a URL 404s, the failure is handled with fallback.
+    // Load animations
     loadLottie('anim-sgpa', lottieUrls.sgpa, true, true);
     loadLottie('anim-cgpa', lottieUrls.cgpa, true, true);
     loadLottie('anim-perc', lottieUrls.perc, true, true);
-
-    // prepare loader animation (kept paused until shown)
     loadLottie('loaderAnim', lottieUrls.loader, true, true);
 
-    // Enhance tap feedback on mobile (fast)
+    // Card interactions
     const cards = document.querySelectorAll('.card');
     const overlay = document.getElementById('loaderOverlay');
 
@@ -448,11 +528,11 @@
     }
 
     cards.forEach(card => {
-      card.addEventListener('touchstart', () => card.classList.add('is-touching'));
-      card.addEventListener('touchend', () => card.classList.remove('is-touching'));
+      card.addEventListener('touchstart', () => card.classList.add('is-touching'), {passive: true});
+      card.addEventListener('touchend', () => card.classList.remove('is-touching'), {passive: true});
       card.addEventListener('mousedown', () => card.classList.add('is-touching'));
       card.addEventListener('mouseup', () => card.classList.remove('is-touching'));
-      // keyboard accessibility: Enter also navigates (anchor already handles it)
+      
       card.addEventListener('keydown', (e) => {
         if(e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -460,23 +540,105 @@
         }
       });
 
-      // loader on click before navigation (normal clicks only)
       card.addEventListener('click', (e) => {
         if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         const href = card.getAttribute('href');
         if(!href || href.startsWith('#')) return;
         e.preventDefault();
         showLoader();
-        setTimeout(()=>{ window.location.href = href; }, 180);
+        setTimeout(()=>{ window.location.href = href; }, 140);
       });
     });
 
-    // Prevent default context menu on long-press in WebView (optional)
+    // SWIPE TO HOME GESTURE - PERFECT IMPLEMENTATION
+    const swipeBar = document.getElementById('swipeBar');
+    const swipeProgress = document.getElementById('swipeProgress');
+    const swipeContent = document.getElementById('swipeContent');
+
+    let startX = 0;
+    let currentX = 0;
+    let isSwiping = false;
+    let swipeThreshold = 0.65; // 65% of bar width triggers navigation
+
+    function handleSwipeStart(e) {
+      isSwiping = true;
+      startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      currentX = startX;
+      swipeBar.style.transition = 'none';
+      swipeProgress.style.transition = 'width 50ms linear';
+    }
+
+    function handleSwipeMove(e) {
+      if (!isSwiping) return;
+      
+      currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const deltaX = currentX - startX;
+      const barWidth = swipeBar.offsetWidth;
+      
+      if (deltaX > 0) {
+        const progress = Math.min((deltaX / barWidth) * 100, 100);
+        swipeProgress.style.width = progress + '%';
+        
+        // Move content slightly with swipe
+        const contentShift = Math.min(deltaX * 0.3, 30);
+        swipeContent.style.transform = `translateX(${contentShift}px)`;
+        
+        // Check if threshold reached
+        if (progress >= (swipeThreshold * 100)) {
+          completeSwipe();
+        }
+      }
+    }
+
+    function handleSwipeEnd(e) {
+      if (!isSwiping) return;
+      
+      const deltaX = currentX - startX;
+      const barWidth = swipeBar.offsetWidth;
+      const progress = (deltaX / barWidth);
+      
+      isSwiping = false;
+      
+      if (progress >= swipeThreshold) {
+        completeSwipe();
+      } else {
+        // Reset if didn't reach threshold
+        swipeProgress.style.transition = 'width 200ms ease-out';
+        swipeProgress.style.width = '0%';
+        swipeContent.style.transform = 'translateX(0)';
+        swipeBar.style.transition = 'transform 120ms ease';
+      }
+    }
+
+    function completeSwipe() {
+      // Visual feedback
+      swipeProgress.style.width = '100%';
+      swipeContent.style.transform = 'translateX(40px)';
+      swipeBar.style.transform = 'scale(0.96)';
+      
+      // Show loader and navigate
+      showLoader();
+      setTimeout(() => {
+        window.location.href = 'Home.html';
+      }, 200);
+    }
+
+    // Touch events
+    swipeBar.addEventListener('touchstart', handleSwipeStart, {passive: true});
+    swipeBar.addEventListener('touchmove', handleSwipeMove, {passive: true});
+    swipeBar.addEventListener('touchend', handleSwipeEnd, {passive: true});
+
+    // Mouse events for desktop testing
+    swipeBar.addEventListener('mousedown', handleSwipeStart);
+    document.addEventListener('mousemove', handleSwipeMove);
+    document.addEventListener('mouseup', handleSwipeEnd);
+
+    // Prevent context menu
     document.addEventListener('contextmenu', e => {
       if(!e.ctrlKey && !e.metaKey) e.preventDefault();
     });
 
-    // Ensure proper viewport height in Android WebView (mobile browser address bar issues)
+    // Viewport height fix
     function setVhUnit(){
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
