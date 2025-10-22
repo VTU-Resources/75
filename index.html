@@ -47,7 +47,7 @@
       overflow-x: hidden;
     }
 
-    /* main shell with safe area for app navigation */
+    /* main shell */
     .app {
       min-height: 100vh;
       display: flex;
@@ -232,13 +232,13 @@
       border-top: 1px solid var(--glass-border);
     }
 
-    /* Professional swipe bar */
+    /* Professional swipe bar with Calibri font */
     .swipe-container {
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, rgba(122,31,31,0.08), rgba(122,31,31,0.04));
       border-radius: 14px;
-      padding: 0;
+      padding: 4px;
       box-sizing: border-box;
       border: 1.5px solid var(--glass-border);
       position: relative;
@@ -260,16 +260,18 @@
       letter-spacing: 0.5px;
       pointer-events: none;
       transition: opacity 200ms ease;
+      z-index: 1;
     }
 
     .swipe-track {
       position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
+      left: 4px;
+      top: 4px;
+      height: calc(100% - 8px);
       width: 0;
       background: linear-gradient(90deg, var(--vtu-gold), var(--vtu-gold-dim));
-      border-radius: 12px;
+      border-radius: 11px;
+      z-index: 0;
     }
 
     .swipe-thumb {
@@ -277,10 +279,7 @@
       height: 44px;
       background: linear-gradient(135deg, var(--vtu-maroon), var(--vtu-maroon-dark));
       border-radius: 11px;
-      position: absolute;
-      left: 4px;
-      top: 50%;
-      transform: translateY(-50%);
+      position: relative;
       cursor: grab;
       display: flex;
       align-items: center;
@@ -298,7 +297,7 @@
       font-size: 22px;
     }
 
-    /* Transparent loader overlay */
+    /* loader overlay - TRANSPARENT */
     .loader-overlay{
       position: fixed;
       inset: 0;
@@ -319,11 +318,14 @@
       transition: opacity 140ms ease, visibility 0s;
     }
     .loader-box{
-      width: 80px;
-      height: 80px;
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 10px;
     }
     
     .anim > * { width: 100%; height: 100%; }
@@ -389,14 +391,17 @@
       const target = document.getElementById(targetId);
       if(!target) return;
       try {
-        lottie.loadAnimation({
+        const anim = lottie.loadAnimation({
           container: target,
           renderer: 'svg',
           loop: true,
           autoplay: true,
           path: jsonUrl,
         });
-      } catch(e) { console.error("Lottie failed to load:", e); }
+        anim.setSpeed(1.15);
+      } catch(e) {
+        // Fallback or error handling can go here
+      }
     }
 
     const lottieUrls = {
@@ -422,13 +427,15 @@
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         if(e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        const href = card.getAttribute('href');
+        if(!href) return;
         e.preventDefault();
         showLoader();
-        setTimeout(() => { window.location.href = card.getAttribute('href'); }, 140);
+        setTimeout(() => { window.location.href = href; }, 140);
       });
     });
 
-    // Final swipe gesture logic
+    // Professional swipe gesture logic
     const swipeContainer = document.getElementById('swipeContainer');
     const swipeThumb = document.getElementById('swipeThumb');
     const swipeTrack = document.getElementById('swipeTrack');
@@ -436,12 +443,15 @@
 
     let isSwiping = false;
     let startX = 0;
-    const thumbStartX = 4; // Initial left padding from CSS
+    let currentTranslate = 0;
 
     function handleSwipeStart(e) {
       isSwiping = true;
-      startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      [swipeThumb, swipeTrack, swipeText].forEach(el => el.style.transition = 'none');
+      const thumbRect = swipeThumb.getBoundingClientRect();
+      startX = (e.type.includes('touch') ? e.touches[0].clientX : e.clientX) - thumbRect.left;
+      swipeThumb.style.transition = 'none';
+      swipeTrack.style.transition = 'none';
+      swipeText.style.transition = 'opacity 150ms ease-out';
       swipeThumb.style.cursor = 'grabbing';
       document.body.style.cursor = 'grabbing';
     }
@@ -450,52 +460,58 @@
       if (!isSwiping) return;
       e.preventDefault();
 
+      const containerRect = swipeContainer.getBoundingClientRect();
       const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const deltaX = currentX - startX;
-      
-      const containerWidth = swipeContainer.offsetWidth;
       const thumbWidth = swipeThumb.offsetWidth;
-      const maxSwipeDistance = containerWidth - thumbWidth - (thumbStartX * 2);
-
-      let newThumbPos = Math.max(0, deltaX);
-      newThumbPos = Math.min(newThumbPos, maxSwipeDistance);
       
-      const swipeProgress = newThumbPos / maxSwipeDistance;
-
-      swipeThumb.style.transform = `translateX(${newThumbPos}px) translateY(-50%)`;
+      // Calculate position relative to container
+      let newPosition = currentX - containerRect.left - startX;
       
-      // MODIFICATION: Perfected track fill logic to remove starting gap.
-      swipeTrack.style.width = `${thumbStartX + newThumbPos + (thumbWidth / 2)}px`;
-
-      swipeText.style.opacity = Math.max(0, 0.6 - (swipeProgress * 1.5));
+      // Constrain within bounds (accounting for padding)
+      const minPos = 0;
+      const maxPos = containerRect.width - thumbWidth - 8;
+      newPosition = Math.max(minPos, Math.min(newPosition, maxPos));
+      
+      currentTranslate = newPosition;
+      
+      // Calculate progress
+      const progress = newPosition / maxPos;
+      
+      // Update thumb position
+      swipeThumb.style.transform = `translateX(${newPosition}px)`;
+      
+      // Update track width to fill behind thumb
+      swipeTrack.style.width = `${newPosition + (thumbWidth / 2)}px`;
+      
+      // Fade out text
+      swipeText.style.opacity = Math.max(0, 0.6 - (progress * 0.8));
     }
 
     function handleSwipeEnd() {
       if (!isSwiping) return;
       isSwiping = false;
 
+      const containerRect = swipeContainer.getBoundingClientRect();
+      const thumbWidth = swipeThumb.offsetWidth;
+      const maxPos = containerRect.width - thumbWidth - 8;
+      const progress = currentTranslate / maxPos;
+
       swipeThumb.style.cursor = 'grab';
       document.body.style.cursor = '';
-      
-      const containerWidth = swipeContainer.offsetWidth;
-      const thumbWidth = swipeThumb.offsetWidth;
-      const currentThumbPos = swipeThumb.getBoundingClientRect().left - swipeContainer.getBoundingClientRect().left - thumbStartX;
-      const maxSwipeDistance = containerWidth - thumbWidth - (thumbStartX * 2);
-      
-      const swipeProgress = currentThumbPos / maxSwipeDistance;
 
-      // Redirect ONLY if swipe is 100% complete
-      if (swipeProgress >= 1) {
+      // Only redirect when fully reached the end (98% or more)
+      if (progress >= 0.98) {
         completeSwipe();
       } else {
-        // Reset to initial state
+        // Reset to start
         swipeThumb.style.transition = 'transform 300ms cubic-bezier(.2,1,.4,1)';
         swipeTrack.style.transition = 'width 300ms cubic-bezier(.2,1,.4,1)';
         swipeText.style.transition = 'opacity 300ms ease-in';
 
-        swipeThumb.style.transform = `translateX(0) translateY(-50%)`;
+        swipeThumb.style.transform = 'translateX(0)';
         swipeTrack.style.width = '0px';
         swipeText.style.opacity = '0.6';
+        currentTranslate = 0;
       }
     }
 
@@ -518,3 +534,4 @@
   </script>
 </body>
 </html>
+
